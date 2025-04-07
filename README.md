@@ -1,7 +1,7 @@
 # Musculation App API
 
 ## Description
-Cette API permet de gérer des utilisateurs, des exercices, des programmes d'entraînement et l'authentification des utilisateurs dans une application dédiée à la musculation. Elle utilise **Node.js**, **Express**, et une base de données PostgreSQL. L'API permet de créer, lire, mettre à jour et supprimer des utilisateurs, des exercices et des programmes d'entraînement.
+Cette API permet de gérer des utilisateurs, des exercices, des programmes d'entraînement et l'authentification des utilisateurs dans une application dédiée à la musculation. Elle utilise **Node.js**, **Express**, et une base de données PostgreSQL [schéma visionnable içi](https://dbdiagram.io/d/67ea3b144f7afba184c506ed). L'API permet de créer, lire, mettre à jour et supprimer des utilisateurs, des exercices et des programmes d'entraînement.
 
 ## Fonctionnalités
 - **Gestion des utilisateurs** : Création de comptes, connexion et gestion des informations des utilisateurs.
