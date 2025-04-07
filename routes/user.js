@@ -83,7 +83,7 @@ router.get('/:id', async (req, res) => {
  */
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
-    const { email, name } = req.body;
+    const { email } = req.body;
   
     try {
       const result = await pool.query(
