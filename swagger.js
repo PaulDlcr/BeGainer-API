@@ -1,20 +1,23 @@
 // swagger.js
 const swaggerJSDoc = require('swagger-jsdoc');
+require('dotenv').config();
+
+// Détermine l'URL en fonction de l'environnement
+const apiUrl = process.env.NODE_ENV === 'production' 
+  ? process.env.SWAGGER_API_URL_PROD
+  : process.env.SWAGGER_API_URL_DEV;
 
 const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'API d\'authentification',
+      title: 'BeGainer API',
       version: '1.0.0',
       description: 'Une API simple avec Express, PostgreSQL, JWT',
     },
     servers: [
       {
-        url: 'https://begainer-api.onrender.com',
-        description: 'Serveur de production',
-        url: 'http://localhost:3000',
-        description: 'Serveur de développement',
+        url: apiUrl,
       },
     ],
   },
