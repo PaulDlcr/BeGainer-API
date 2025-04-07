@@ -6,8 +6,9 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./swagger');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
-const exercisesRouter = require('./routes/exercise');  // Importer le routeur pour les exercices
-const programsRouter = require('./routes/program'); // Importer le routeur pour les programmes
+const exercisesRouter = require('./routes/exercise');
+const programsRouter = require('./routes/program'); 
+const programExercisesRouter = require('./routes/program_exercise');
 
 const app = express();
 app.use(cors());
@@ -20,7 +21,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/exercises', exercisesRouter);
-app.use('/api/programs',programsRouter); // Assurez-vous que le fichier existe
+app.use('/api/programs',programsRouter);
+app.use('/api/program_exercises', programExercisesRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
