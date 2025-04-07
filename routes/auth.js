@@ -23,8 +23,6 @@ require('dotenv').config();
  *                 type: string
  *               password:
  *                 type: string
- *               name:
- *                 type: string
  *     responses:
  *       201:
  *         description: Utilisateur créé
@@ -33,7 +31,7 @@ require('dotenv').config();
  */
 // 🔐 Register
 router.post('/register', async (req, res) => {
-  const { email, password, name } = req.body;
+  const { email, password } = req.body;
 
   try {
     const userExists = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
@@ -41,8 +39,8 @@ router.post('/register', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await pool.query(
-      'INSERT INTO users (email, password, name) VALUES ($1, $2, $3) RETURNING id, email, name',
-      [email, hashedPassword, name]
+      'INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email',
+      [email, hashedPassword]
     );
 
     res.status(201).json(newUser.rows[0]);
@@ -92,7 +90,7 @@ router.post('/login', async (req, res) => {
       { expiresIn: '1h' }
     );
 
-    res.json({ token, user: { id: user.rows[0].id, email: user.rows[0].email, name: user.rows[0].name } });
+    res.json({ token, user: { id: user.rows[0].id, email: user.rows[0].email } });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
