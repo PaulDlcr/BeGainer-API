@@ -12,6 +12,9 @@ const options = {
     servers: [
       {
         url: 'https://begainer-api.onrender.com',
+        description: 'Serveur de production',
+        url: 'http://localhost:3000',
+        description: 'Serveur de développement',
       },
     ],
   },
