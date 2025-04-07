@@ -15,7 +15,7 @@ require('dotenv').config();
  */
 router.get('/', async (req, res) => {
   try {
-    const result = await pool.query('SELECT id, email, name FROM users');
+    const result = await pool.query('SELECT id, email FROM users');
     console.log(result);  // Vérifie si la requête retourne bien des résultats
     res.status(200).json(result.rows);
   } catch (err) {
@@ -44,7 +44,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
-      const result = await pool.query('SELECT id, email, name FROM users WHERE id = $1', [id]);
+      const result = await pool.query('SELECT id, email FROM users WHERE id = $1', [id]);
       if (result.rows.length === 0) {
         return res.status(404).json({ error: 'Utilisateur non trouvé' });
       }
@@ -75,8 +75,6 @@ router.get('/:id', async (req, res) => {
  *             properties:
  *               email:
  *                 type: string
- *               name:
- *                 type: string
  *     responses:
  *       200:
  *         description: Utilisateur mis à jour
@@ -89,8 +87,8 @@ router.put('/:id', async (req, res) => {
   
     try {
       const result = await pool.query(
-        'UPDATE users SET email = $1, name = $2 WHERE id = $3 RETURNING id, email, name',
-        [email, name, id]
+        'UPDATE users SET email = $1, WHERE id = $2 RETURNING id, email',
+        [email, id]
       );
   
       if (result.rows.length === 0) {
