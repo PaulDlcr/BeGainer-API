@@ -56,30 +56,6 @@ const router = express.Router();
  *           type: integer
  *         milestone:
  *           type: string
- *         created_at:
- *           type: string
- *           format: date-time
- */
-
-/**
- * @swagger
- * /api/user-preferences:
- *   post:
- *     summary: Créer les préférences d'un utilisateur
- *     tags: [UserPreferences]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/UserPreference'
- *     responses:
- *       201:
- *         description: Préférences créées
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/UserPreference'
  */
 
 /**
