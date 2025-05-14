@@ -2,6 +2,7 @@ const express = require('express');
 const pool = require('../db');  // Assure-toi que tu utilises la bonne connexion à la DB
 
 const router = express.Router();
+const programController = require('../controllers/programController');
 
 /**
  * @swagger
@@ -25,8 +26,6 @@ const router = express.Router();
  *                   user_id:
  *                     type: string
  *                   name:
- *                     type: string
- *                   goal:
  *                     type: string
  *                   duration_weeks:
  *                     type: integer
@@ -71,8 +70,6 @@ router.get('/', async (req, res) => {
  *                   type: string
  *                 name:
  *                   type: string
- *                 goal:
- *                   type: string
  *                 duration_weeks:
  *                   type: integer
  *       404:
@@ -115,9 +112,6 @@ router.get('/:id', async (req, res) => {
  *                 type: string
  *               name:
  *                 type: string
- *               goal:
- *                 type: string
- *                 enum: ['lose weight', 'gain muscle', 'improve health']
  *               duration_weeks:
  *                 type: integer
  *     responses:
@@ -127,12 +121,12 @@ router.get('/:id', async (req, res) => {
  *         description: Erreur interne du serveur
  */
 router.post('/', async (req, res) => {
-    const { user_id, name, goal, duration_weeks } = req.body;
+    const { user_id, name, duration_weeks } = req.body;
   
     try {
       const result = await pool.query(
-        'INSERT INTO programs (user_id, name, goal, duration_weeks) VALUES ($1, $2, $3, $4) RETURNING *',
-        [user_id, name, goal, duration_weeks]
+        'INSERT INTO programs (user_id, name, duration_weeks) VALUES ($1, $2, $3, $4) RETURNING *',
+        [user_id, name, duration_weeks]
       );
       res.status(201).json(result.rows[0]);
     } catch (err) {
@@ -164,9 +158,6 @@ router.post('/', async (req, res) => {
  *             properties:
  *               name:
  *                 type: string
- *               goal:
- *                 type: string
- *                 enum: ['lose weight', 'gain muscle', 'improve health']
  *               duration_weeks:
  *                 type: integer
  *     responses:
@@ -179,12 +170,12 @@ router.post('/', async (req, res) => {
  */
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { name, goal, duration_weeks } = req.body;
+  const { name, duration_weeks } = req.body;
 
   try {
     const result = await pool.query(
-      'UPDATE programs SET name = $1, goal = $2, duration_weeks = $3 WHERE id = $4 RETURNING *',
-      [name, goal, duration_weeks, id]
+      'UPDATE programs SET name = $1, duration_weeks = $2 WHERE id = $3 RETURNING *',
+      [name, duration_weeks, id]
     );
 
     if (result.rows.length === 0) {
@@ -237,4 +228,43 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+
+/**
+ * @swagger
+ * /api/programs/auto-generate:
+ *   post:
+ *     summary: Génère automatiquement un programme d'entraînement personnalisé via l'IA Claude
+ *     tags:
+ *       - Programs
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               user_id:
+ *                 type: string
+ *                 format: uuid
+ *                 example: "c1b4b7a2-1234-4f67-8901-abcdef123456"
+ *     responses:
+ *       201:
+ *         description: Programme généré avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Programme généré avec succès
+ *                 program_id:
+ *                   type: string
+ *                   format: uuid
+ *       404:
+ *         description: Préférences non trouvées
+ *       500:
+ *         description: Erreur serveur ou réponse IA invalide
+ */
+router.post('/auto-generate', programController.autoGenerateProgram);
 module.exports = router;

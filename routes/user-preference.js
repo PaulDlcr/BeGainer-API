@@ -48,7 +48,7 @@ const router = express.Router();
  *           type: integer
  *         goal:
  *           type: string
- *           enum: [loose weight, gain muscle, improve health]
+ *           enum: [lose weight, gain muscle, improve health]
  *         training_place:
  *           type: string
  *           enum: [gym, home_no_equipment]
