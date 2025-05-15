@@ -30,16 +30,25 @@ exports.autoGenerateProgram = async (req, res) => {
       [programId, userId, "Programme IA", preferences.goal, preferences.duration_weeks || 6]
     );
 
-    // 5. Insérer les exercices du programme
-    for (const item of aiResponse) {
+for (const session of aiResponse) {
+      const sessionId = uuidv4();
+
       await pool.query(
-        `INSERT INTO program_exercises (id, program_id, exercise_id, sets, reps, rest_time)
-        VALUES ($1, $2, $3, $4, $5, $6)`,
-        [uuidv4(), programId, item.exercise_id, item.sets, item.reps, item.rest_time]
+        `INSERT INTO program_sessions (id, program_id, name)
+         VALUES ($1, $2, $3)`,
+        [sessionId, programId, session.session_name]
       );
+
+      for (const ex of session.exercises) {
+        await pool.query(
+          `INSERT INTO session_exercises (id, session_id, exercise_id, sets, reps, rest_time)
+           VALUES ($1, $2, $3, $4, $5, $6)`,
+          [uuidv4(), sessionId, ex.exercise_id, ex.sets, ex.reps, ex.rest_time]
+        );
+      }
     }
 
-    res.status(201).json({ message: 'Programme généré avec succès', program_id: programId });
+    res.status(201).json({ message: 'Programme structuré généré avec succès', program_id: programId });
 
   } catch (err) {
     console.error(err);

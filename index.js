@@ -9,7 +9,7 @@ const userRoutes = require('./routes/user');
 const userPreferencesRouter = require('./routes/user-preference');
 const exercisesRouter = require('./routes/exercise');
 const programsRouter = require('./routes/program'); 
-const programExercisesRouter = require('./routes/program-exercise');
+const sessionRouter = require('./routes/session');
 
 const app = express();
 app.use(cors());
@@ -22,8 +22,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/exercises', exercisesRouter);
-app.use('/api/programs',programsRouter);
-app.use('/api/program-exercises', programExercisesRouter);
+app.use('/api/programs', programsRouter);
+app.use('/api/sessions', sessionRouter);
 app.use('/api/user-preferences', userPreferencesRouter);
 
 const PORT = process.env.PORT || 3000;

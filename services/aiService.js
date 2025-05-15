@@ -11,16 +11,23 @@ Nombre de séances par semaine : ${preferences.training_days}
 Exercices disponibles :
 ${exercises.map(ex => `- ${ex.name} (ID: ${ex.id}, groupe musculaire: ${ex.muscle_group}, difficulté: ${ex.difficulty})`).join('\n')}
 
-Génère un programme personnalisé sous forme de tableau JSON uniquement.
+Génère un programme structuré par séances. Chaque séance doit avoir :
+- un nom (session_name) qui décrit la séance comme "Pectoraux et triceps" ou "Jambes et abdos"
+- une liste d'exercices avec exercise_id (UUID existant), sets, reps, rest_time
 
-Format attendu :
+
+Format JSON attendu :
 [
   {
-    "exercise_id": "UUID",
-    "name": "Nom personnalisé de l'exercice",
-    "sets": 3,
-    "reps": 12,
-    "rest_time": 60
+    "session_name": "Nom de la séance",
+    "exercises": [
+      {
+        "exercise_id": "uuid-existant",
+        "sets": 4,
+        "reps": 12,
+        "rest_time": 90
+      }
+    ]
   }
 ]
 Ne réponds qu'avec ce tableau JSON, sans texte explicatif.
