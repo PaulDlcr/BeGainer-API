@@ -27,7 +27,6 @@ Chaque séance doit contenir uniquement :
 [
   {
     "session_name": "Nom de la séance",
-    "day_number": 1,
     "exercises": [
       {
         "exercise_id": "uuid-existant",
