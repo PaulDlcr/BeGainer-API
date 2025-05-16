@@ -24,10 +24,19 @@ exports.autoGenerateProgram = async (req, res) => {
 
     // 4. Créer le programme
     const programId = uuidv4();
+    const goalLabelMap = {
+      'gain muscle': 'Prise de masse',
+      'lose weight': 'Perte de poids',
+      'improve health': 'Amélioration de la santé'
+    };
+
+    const readableGoal = goalLabelMap[preferences.goal.toLowerCase()] || preferences.goal;
+    const programName = `Programme ${readableGoal}`;
+
     await pool.query(
       `INSERT INTO programs (id, user_id, name, goal, duration_weeks)
        VALUES ($1, $2, $3, $4, $5)`,
-      [programId, userId, "Programme IA", preferences.goal, preferences.duration_weeks || 6]
+      [programId, userId, programName, preferences.goal, preferences.duration_weeks || 6]
     );
 
     await pool.query(
