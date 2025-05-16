@@ -1,13 +1,21 @@
 const fetch = require('node-fetch');
 
 exports.generateProgramWithClaude = async (preferences, exercises) => {
+
+const dayMap = {
+1: "Lundi", 2: "Mardi", 3: "Mercredi", 4: "Jeudi",
+5: "Vendredi", 6: "Samedi", 7: "Dimanche"
+};
+const readableDays = preferences.training_days?.map(d => dayMap[d]).join(', ') || 'non précisé';
+
 const prompt = `
 Tu es un coach sportif IA.
 
-Voici les préférences de l’utilisateur :
+Voici les préférences de l'utilisateur :
 - Objectif : ${preferences.goal}
 - Durée des séances : ${preferences.session_duration} minutes
-- Nombre de séances par semaine : ${preferences.training_days}
+- Jours d'entraînement par semaine (sous forme de numéro de jour, 1 = lundi, 7 = dimanche) : ${preferences.training_days.join(', ')}
+- Interprétation : ${readableDays}
 - Lieu d'entraînement : ${preferences.training_place} ${preferences.training_place === 'home_no_equipment' ? "(pas d'équipement, seulement poids du corps ou cardio libre)" : "(équipement de salle autorisé)"}
 
 Voici les exercices disponibles (avec leurs contraintes) :
@@ -15,9 +23,10 @@ ${exercises.map(e =>
   `- ID: ${e.id}, Nom: ${e.name}, Groupe: ${e.muscle_group}, Équipement: ${e.equipment}, Difficulté: ${e.difficulty}`
 ).join('\n')}
 
-Ta tâche : Génère un programme structuré en ${preferences.training_days} séances hebdomadaires).
+Génère un programme structuré sous forme d'un tableau JSON.
 
 Chaque séance doit contenir uniquement :
+- Crée ${preferences.training_days.length} séances correspondant aux jours listés.
 - des exercices **sans équipement** si training_place = "home_no_equipment"
 - une variété de groupes musculaires cohérents
 - un nom de séance explicite
@@ -27,6 +36,7 @@ Chaque séance doit contenir uniquement :
 [
   {
     "session_name": "Nom de la séance",
+    "day_number": 1,
     "exercises": [
       {
         "exercise_id": "uuid-existant",
@@ -38,7 +48,7 @@ Chaque séance doit contenir uniquement :
   }
 ]
 
-Réponds uniquement avec ce tableau JSON. Aucun texte explicatif, pas d'introduction.
+⚠️ Assure-toi que la réponse est un JSON **valide**, sans erreur de virgule ou de syntaxe. N'inclus aucun texte explicatif. Réponds uniquement avec le tableau.
 `;
 
 
@@ -60,9 +70,19 @@ Réponds uniquement avec ce tableau JSON. Aucun texte explicatif, pas d'introduc
   const data = await response.json();
   const content = data?.content?.[0]?.text;
   console.log('=== Contenu IA ===\n', content);
+  // Nettoyage : on prend uniquement le JSON brut
+  const start = content.indexOf('[');
+  const end = content.lastIndexOf(']');
+  const jsonRaw = content.slice(start, end + 1);
 
   try {
-    return JSON.parse(content);
+    const fixed = jsonRaw
+    .replace(/}\s*{/g, '}, {') // Corrige des objets collés
+    .replace(/"\s*([a-zA-Z_]+)\s*":/g, '"$1":') // Corrige des clés mal formatées
+    .replace(/,\s*}/g, '}') // Vire virgule en fin d’objet
+    .replace(/,\s*]/g, ']'); // Vire virgule en fin de tableau
+  return JSON.parse(fixed);
+
   } catch (err) {
     console.error("Erreur parsing IA:", err);
     return null;

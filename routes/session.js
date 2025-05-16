@@ -102,16 +102,20 @@ router.get('/:id', async (req, res) => {
  *                 type: string
  *               day_number:
  *                 type: integer
+ *                 minimum: 1
+ *                 maximum: 7
  *     responses:
  *       201:
  *         description: Séance créée avec succès
  */
 router.post('/', async (req, res) => {
-  const { program_id, name } = req.body;
+  const { program_id, name, day_number } = req.body;
+
   try {
     const result = await pool.query(
-      'INSERT INTO program_sessions (id, program_id, name) VALUES ($1, $2, $3) RETURNING *',
-      [uuidv4(), program_id, name]
+      `INSERT INTO program_sessions (id, program_id, name, day_number)
+       VALUES ($1, $2, $3, $4) RETURNING *`,
+      [uuidv4(), program_id, name, day_number]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -119,6 +123,7 @@ router.post('/', async (req, res) => {
     res.status(500).json({ error: 'Erreur lors de la création de la séance' });
   }
 });
+
 
 // Modifier une séance
 /**
@@ -140,11 +145,20 @@ router.post('/', async (req, res) => {
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - program_id
+ *               - name
+ *               - day_number
  *             properties:
+ *               program_id:
+ *                 type: string
  *               name:
  *                 type: string
  *               day_number:
  *                 type: integer
+ *                 minimum: 1
+ *                 maximum: 7
+ *
  *     responses:
  *       200:
  *         description: Séance mise à jour
@@ -153,11 +167,14 @@ router.post('/', async (req, res) => {
  */
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { name } = req.body;
+  const { name, day_number } = req.body;
+
   try {
     const result = await pool.query(
-      'UPDATE program_sessions SET name = $1 WHERE id = $2 RETURNING *',
-      [name, id]
+      `UPDATE program_sessions
+       SET name = $1, day_number = $2
+       WHERE id = $3 RETURNING *`,
+      [name, day_number, id]
     );
     if (result.rows.length === 0) return res.status(404).json({ error: 'Séance non trouvée' });
     res.json(result.rows[0]);
@@ -166,6 +183,7 @@ router.put('/:id', async (req, res) => {
     res.status(500).json({ error: 'Erreur lors de la mise à jour de la séance' });
   }
 });
+
 
 // Supprimer une séance
 /**

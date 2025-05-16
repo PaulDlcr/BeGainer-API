@@ -30,7 +30,14 @@ exports.autoGenerateProgram = async (req, res) => {
       [programId, userId, "Programme IA", preferences.goal, preferences.duration_weeks || 6]
     );
 
-for (const session of aiResponse) {
+    await pool.query(
+      `UPDATE user_preferences
+       SET active_program_id = $1
+       WHERE user_id = $2`,
+      [programId, userId]
+    );
+
+    for (const session of aiResponse) {
       const sessionId = uuidv4();
 
       await pool.query(

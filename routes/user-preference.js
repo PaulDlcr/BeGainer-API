@@ -22,9 +22,9 @@ const router = express.Router();
  *         - age
  *         - height_cm
  *         - weight_kg
- *         - training_freq
  *         - goal
  *         - training_place
+ *         - training_days
  *         - session_length
  *       properties:
  *         id:
@@ -44,18 +44,25 @@ const router = express.Router();
  *           type: integer
  *         weight_kg:
  *           type: integer
- *         training_freq:
- *           type: integer
  *         goal:
  *           type: string
  *           enum: [lose weight, gain muscle, improve health]
  *         training_place:
  *           type: string
- *           enum: [gym, home_no_equipment]
+ *           enum: [gym, home_no_equipment, home_with_equipment]
+ *         training_days:
+ *           type: array
+ *           items:
+ *             type: integer
+ *             minimum: 1
+ *             maximum: 7
  *         session_length:
  *           type: integer
  *         milestone:
  *           type: string
+ *         active_program_id:
+ *           type: string
+ *           format: uuid
  */
 
 /**
@@ -82,18 +89,18 @@ router.post('/', async (req, res) => {
     try {
       const {
         user_id, name, gender, age, height_cm, weight_kg,
-        training_freq, goal, training_place, session_length, milestone
+        training_days, goal, training_place, session_length, milestone, active_program_id
       } = req.body;
   
       const result = await pool.query(
         `INSERT INTO user_preferences (
           user_id, name, gender, age, height_cm, weight_kg,
-          training_freq, goal, training_place, session_length, milestone
-        ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
+          training_days, goal, training_place, session_length, milestone, active_program_id
+        ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
         RETURNING *`,
         [
           user_id, name, gender, age, height_cm, weight_kg,
-          training_freq, goal, training_place, session_length, milestone
+          training_days, goal, training_place, session_length, milestone, active_program_id
         ]
       );
   
@@ -204,7 +211,7 @@ router.put('/:user_id', async (req, res) => {
       const { user_id } = req.params;
       const {
         name, gender, age, height_cm, weight_kg,
-        training_freq, goal, training_place, session_length, milestone
+        training_days, goal, training_place, session_length, milestone, active_program_id
       } = req.body;
   
       const result = await pool.query(
@@ -214,16 +221,17 @@ router.put('/:user_id', async (req, res) => {
           age = $3,
           height_cm = $4,
           weight_kg = $5,
-          training_freq = $6,
+          training_days = $6,
           goal = $7,
           training_place = $8,
           session_length = $9,
-          milestone = $10
-        WHERE user_id = $11
+          milestone = $10,
+          active_program_id = $11
+        WHERE user_id = $12
         RETURNING *`,
         [
           name, gender, age, height_cm, weight_kg,
-          training_freq, goal, training_place, session_length, milestone, user_id
+          training_days, goal, training_place, session_length, milestone, active_program_id, user_id
         ]
       );
   
