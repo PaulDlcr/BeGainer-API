@@ -41,9 +41,9 @@ exports.autoGenerateProgram = async (req, res) => {
       const sessionId = uuidv4();
 
       await pool.query(
-        `INSERT INTO program_sessions (id, program_id, name)
-         VALUES ($1, $2, $3)`,
-        [sessionId, programId, session.session_name]
+        `INSERT INTO program_sessions (id, program_id, name, day_number)
+         VALUES ($1, $2, $3, $4)`,
+        [sessionId, programId, session.session_name, session.day_number]
       );
 
       for (const ex of session.exercises) {
