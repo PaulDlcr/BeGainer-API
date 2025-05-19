@@ -10,6 +10,8 @@ const userPreferencesRouter = require('./routes/user-preference');
 const exercisesRouter = require('./routes/exercise');
 const programsRouter = require('./routes/program'); 
 const sessionRouter = require('./routes/session');
+const sessionLogRouter = require('./routes/session-log');
+
 
 const app = express();
 app.use(cors());
@@ -25,6 +27,8 @@ app.use('/api/exercises', exercisesRouter);
 app.use('/api/programs', programsRouter);
 app.use('/api/sessions', sessionRouter);
 app.use('/api/user-preferences', userPreferencesRouter);
+app.use('/api', sessionLogRouter);
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
