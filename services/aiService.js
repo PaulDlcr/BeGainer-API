@@ -30,7 +30,6 @@ Chaque séance doit contenir uniquement :
 - des exercices **sans équipement** si training_place = "home_no_equipment"
 - une variété de groupes musculaires cohérents
 - un nom de séance explicite
-- 3 à 6 exercices maximum
 
 ### Format attendu :
 [
@@ -51,14 +50,30 @@ Chaque séance doit contenir uniquement :
 ### Contraintes à respecter :
 
 - Chaque séance **doit** inclure :
-  - un champ "session_name" (ex. "Jour 1 - Haut du corps")
+  - un champ "session_name" (ex. "Séance 1 - Haut du corps")
   - un champ "day_number" (entier compris dans ${preferences.training_days.join(', ')})
-  - un tableau "exercises" contenant **3 à 6** exercices
+  - un tableau "exercises" avec :
+    - "exercise_id" (ID de l'exercice sélectionné parmi ceux listés)
+    - "sets" (entre 3 et 4 pour chaque exo)
+    - "reps"
+    - "rest_time" (en secondes)
+
+  - Le **nombre total de sets par séance** doit correspondre à la durée :
+    - Environ **14-16 sets** pour 60 minutes
+    - Environ **20-24 sets** pour 90 minutes
+    - Environ **28-32 sets** pour 120 minutes
+    - Utilise cette contrainte pour déduire le bon **nombre d'exercices**
+      (ex : 6 exercices * 4 sets = 24 sets)
+    - Le **nombre de répétitions** doit être compris entre 8 et 12
+    - Chaque exercice de musculation doit avoir **3 à 4 sets**
+    - Le **temps de repos** doit être compris entre 30 et 90 secondes
+
   - Si training_place = home_no_equipment, **utilise uniquement des exercices sans machine ni équipement**
-  - Si goal = lose weight, privilégie **cardio** et **poids du corps**
-  - Si goal = gain muscle, privilégie **exercices de musculation avec charge**
-  - Si goal = improve health, privilégie **mobilité**, **renforcement léger**, **stabilité**
-  - Si la durée des séances est > 90 minutes, inclure 5 à 6 exercices ; sinon, rester autour de 3 à 5
+  - Adapter le type d'exercices selon l'objectif :
+    - lose weight → cardio + poids du corps
+    - gain muscle → musculation structurée avec bons groupes musculaires
+    - improve health → mobilité, stabilité, renforcement général
+
 
 ### IMPORTANT :
 - Réponds **uniquement** avec un tableau JSON (aucune explication, aucun texte autour)
@@ -75,7 +90,7 @@ Chaque séance doit contenir uniquement :
       'content-type': 'application/json'
     },
     body: JSON.stringify({
-      model: "claude-3-haiku-20240307",
+      model: process.env.CLAUDE_MODEL,
       max_tokens: 3000,
       temperature: 0.7,
       messages: [{ role: "user", content: prompt }]

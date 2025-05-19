@@ -33,10 +33,17 @@ const { v4: uuidv4 } = require('uuid');
 router.get('/program/:programId', async (req, res) => {
   try {
     const { programId } = req.params;
+    
     const result = await pool.query(
-      'SELECT * FROM program_sessions WHERE program_id = $1',
+      `SELECT ps.*, COUNT(se.id) AS exercise_count
+       FROM program_sessions ps
+       LEFT JOIN session_exercises se ON ps.id = se.session_id
+       WHERE ps.program_id = $1
+       GROUP BY ps.id
+       ORDER BY ps.day_number`,
       [programId]
     );
+
     res.json(result.rows);
   } catch (err) {
     console.error(err);
