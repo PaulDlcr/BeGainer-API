@@ -27,11 +27,7 @@ const pool = require('../db');
  *                     type: string
  *                   description:
  *                     type: string
- *                   type:
- *                     type: integer
  *                   muscle_group:
- *                     type: string
- *                   difficulty:
  *                     type: string
  *       500:
  *         description: Erreur interne du serveur
@@ -74,11 +70,7 @@ router.get('/', async (req, res) => {
  *                   type: string
  *                 description:
  *                   type: string
- *                 type:
- *                   type: integer
  *                 muscle_group:
- *                   type: string
- *                 difficulty:
  *                   type: string
  *       404:
  *         description: Exercice non trouvé
@@ -120,11 +112,7 @@ router.get('/:id', async (req, res) => {
  *                 type: string
  *               description:
  *                 type: string
- *               type:
- *                 type: integer
  *               muscle_group:
- *                 type: string
- *               difficulty:
  *                 type: string
  *     responses:
  *       201:
@@ -140,22 +128,18 @@ router.get('/:id', async (req, res) => {
  *                   type: string
  *                 description:
  *                   type: string
- *                 type:
- *                   type: integer
  *                 muscle_group:
- *                   type: string
- *                 difficulty:
  *                   type: string
  *       500:
  *         description: Erreur interne du serveur
  */
 router.post('/', async (req, res) => {
-  const { name, description, type, muscle_group, difficulty } = req.body;
+  const { name, description, muscle_group  } = req.body;
 
   try {
     const result = await pool.query(
-      'INSERT INTO exercises (name, description, type, muscle_group, difficulty) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-      [name, description, type, muscle_group, difficulty]
+      'INSERT INTO exercises (name, description, muscle_group) VALUES ($1, $2, $3) RETURNING *',
+      [name, description, muscle_group]
     );
     res.status(201).json(result.rows[0]);  // Retourner l'exercice créé
   } catch (err) {
@@ -189,12 +173,9 @@ router.post('/', async (req, res) => {
  *                 type: string
  *               description:
  *                 type: string
- *               type:
- *                 type: integer
  *               muscle_group:
  *                 type: string
- *               difficulty:
- *                 type: string
+
  *     responses:
  *       200:
  *         description: Exercice mis à jour avec succès
@@ -209,11 +190,7 @@ router.post('/', async (req, res) => {
  *                   type: string
  *                 description:
  *                   type: string
- *                 type:
- *                   type: integer
  *                 muscle_group:
- *                   type: string
- *                 difficulty:
  *                   type: string
  *       404:
  *         description: Exercice non trouvé
@@ -222,12 +199,12 @@ router.post('/', async (req, res) => {
  */
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { name, description, type, muscle_group, difficulty } = req.body;
+  const { name, description, muscle_group } = req.body;
 
   try {
     const result = await pool.query(
-      'UPDATE exercises SET name = $1, description = $2, type = $3, muscle_group = $4, difficulty = $5 WHERE id = $6 RETURNING *',
-      [name, description, type, muscle_group, difficulty, id]
+      'UPDATE exercises SET name = $1, description = $2, muscle_group = $3 WHERE id = $4 RETURNING *',
+      [name, description, muscle_group, id]
     );
 
     if (result.rows.length === 0) {

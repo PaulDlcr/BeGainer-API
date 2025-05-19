@@ -9,21 +9,21 @@ const dayMap = {
 const readableDays = preferences.training_days?.map(d => dayMap[d]).join(', ') || 'non précisé';
 
 const prompt = `
-Tu es un coach sportif IA.
+Tu es un coach sportif IA expert en programmation d'entraînement personnalisé.
 
 Voici les préférences de l'utilisateur :
 - Objectif : ${preferences.goal}
-- Durée des séances : ${preferences.session_duration} minutes
+-  Durée des séances : ${preferences.session_duration} minutes
 - Jours d'entraînement par semaine (sous forme de numéro de jour, 1 = lundi, 7 = dimanche) : ${preferences.training_days.join(', ')}
-- Interprétation : ${readableDays}
 - Lieu d'entraînement : ${preferences.training_place} ${preferences.training_place === 'home_no_equipment' ? "(pas d'équipement, seulement poids du corps ou cardio libre)" : "(équipement de salle autorisé)"}
 
 Voici les exercices disponibles (avec leurs contraintes) :
 ${exercises.map(e => 
-  `- ID: ${e.id}, Nom: ${e.name}, Groupe: ${e.muscle_group}, Équipement: ${e.equipment}, Difficulté: ${e.difficulty}`
+  `- ID: ${e.id}, Nom: ${e.name}, Groupe: ${e.muscle_group}`
 ).join('\n')}
 
 Génère un programme structuré sous forme d'un tableau JSON.
+Ta mission est de générer exactement ${preferences.training_days.length} séances d'entraînement personnalisées, adaptées aux préférences ci-dessus.
 
 Chaque séance doit contenir uniquement :
 - Crée ${preferences.training_days.length} séances correspondant aux jours listés.
@@ -32,7 +32,7 @@ Chaque séance doit contenir uniquement :
 - un nom de séance explicite
 - 3 à 6 exercices maximum
 
-**Format JSON strict attendu :**
+### Format attendu :
 [
   {
     "session_name": "Nom de la séance",
@@ -48,15 +48,22 @@ Chaque séance doit contenir uniquement :
   }
 ]
 
-Recommandation :
-- Si l'utilisateur a un objectif de perte de poids, privilégie les exercices de cardio et de poids du corps.
-- Si l'utilisateur a un objectif de prise de masse, privilégie les exercices de musculation avec poids.
-- Si l'utilisateur a un objectif de santé, privilégie les exercices de mobilité et de renforcement musculaire.
-- Si il y a trop de séances, définie une séance avec du cardio leger ou de la mobilité active en utilisant seulement les exercices de json.
-- Si le temps des séances est supérieur à 90 minutes, vise un nombre d'exercices entre 5 et 6.
+### Contraintes à respecter :
 
-⚠️ Assure-toi que la réponse est un JSON **valide**, sans erreur de virgule ou de syntaxe. Chaque séance doit contenir les champs : session_name, day_number et exercises (au moins 1 exercice). 
-Aucune séance ne doit être partielle ou incomplète.N'inclus aucun texte explicatif. Réponds uniquement avec le tableau.
+- Chaque séance **doit** inclure :
+  - un champ "session_name" (ex. "Jour 1 - Haut du corps")
+  - un champ "day_number" (entier compris dans ${preferences.training_days.join(', ')})
+  - un tableau "exercises" contenant **3 à 6** exercices
+  - Si training_place = home_no_equipment, **utilise uniquement des exercices sans machine ni équipement**
+  - Si goal = lose weight, privilégie **cardio** et **poids du corps**
+  - Si goal = gain muscle, privilégie **exercices de musculation avec charge**
+  - Si goal = improve health, privilégie **mobilité**, **renforcement léger**, **stabilité**
+  - Si la durée des séances est > 90 minutes, inclure 5 à 6 exercices ; sinon, rester autour de 3 à 5
+
+### IMPORTANT :
+- Réponds **uniquement** avec un tableau JSON (aucune explication, aucun texte autour)
+- Le JSON **doit être valide** : pas de virgule manquante ou superflue, pas de guillemets oubliés
+- **Aucune séance ne doit être incomplète** (chaque séance doit contenir les 3 champs obligatoires)
 `;
 
 
@@ -69,7 +76,7 @@ Aucune séance ne doit être partielle ou incomplète.N'inclus aucun texte expli
     },
     body: JSON.stringify({
       model: "claude-3-haiku-20240307",
-      max_tokens: 2000,
+      max_tokens: 3000,
       temperature: 0.7,
       messages: [{ role: "user", content: prompt }]
     })

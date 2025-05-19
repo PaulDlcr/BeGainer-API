@@ -242,7 +242,7 @@ router.get('/:sessionId/exercises', async (req, res) => {
   try {
     const { sessionId } = req.params;
     const result = await pool.query(
-      `SELECT se.*, e.name, e.muscle_group, e.difficulty
+      `SELECT se.*, e.name, e.muscle_group
        FROM session_exercises se
        JOIN exercises e ON se.exercise_id = e.id
        WHERE se.session_id = $1`,
