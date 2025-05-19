@@ -48,7 +48,15 @@ Chaque séance doit contenir uniquement :
   }
 ]
 
-⚠️ Assure-toi que la réponse est un JSON **valide**, sans erreur de virgule ou de syntaxe. Chaque séance doit contenir les champs : session_name, day_number et exercises (au moins 1 exercice). Aucune séance ne doit être partielle ou incomplète.N'inclus aucun texte explicatif. Réponds uniquement avec le tableau.
+Recommandation :
+- Si l'utilisateur a un objectif de perte de poids, privilégie les exercices de cardio et de poids du corps.
+- Si l'utilisateur a un objectif de prise de masse, privilégie les exercices de musculation avec poids.
+- Si l'utilisateur a un objectif de santé, privilégie les exercices de mobilité et de renforcement musculaire.
+- Si il y a trop de séances, définie une séance avec du cardio leger ou de la mobilité active en utilisant seulement les exercices de json.
+- Si le temps des séances est supérieur à 90 minutes, vise un nombre d'exercices entre 5 et 6.
+
+⚠️ Assure-toi que la réponse est un JSON **valide**, sans erreur de virgule ou de syntaxe. Chaque séance doit contenir les champs : session_name, day_number et exercises (au moins 1 exercice). 
+Aucune séance ne doit être partielle ou incomplète.N'inclus aucun texte explicatif. Réponds uniquement avec le tableau.
 `;
 
 
@@ -61,7 +69,7 @@ Chaque séance doit contenir uniquement :
     },
     body: JSON.stringify({
       model: "claude-3-haiku-20240307",
-      max_tokens: 1500,
+      max_tokens: 2000,
       temperature: 0.7,
       messages: [{ role: "user", content: prompt }]
     })
