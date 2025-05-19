@@ -114,6 +114,9 @@ router.get('/:id', async (req, res) => {
  *                 type: string
  *               duration_weeks:
  *                 type: integer
+ *               start_date:
+ *                 type: string
+ *                 format: date
  *     responses:
  *       201:
  *         description: Programme créé avec succès
@@ -121,12 +124,12 @@ router.get('/:id', async (req, res) => {
  *         description: Erreur interne du serveur
  */
 router.post('/', async (req, res) => {
-    const { user_id, name, duration_weeks } = req.body;
+    const { user_id, name, duration_weeks, start_date } = req.body;
   
     try {
       const result = await pool.query(
-        'INSERT INTO programs (user_id, name, duration_weeks) VALUES ($1, $2, $3, $4) RETURNING *',
-        [user_id, name, duration_weeks]
+        'INSERT INTO programs (user_id, name, duration_weeks, start_date) VALUES ($1, $2, $3, $4) RETURNING *',
+        [user_id, name, duration_weeks, start_date]
       );
       res.status(201).json(result.rows[0]);
     } catch (err) {
@@ -160,6 +163,9 @@ router.post('/', async (req, res) => {
  *                 type: string
  *               duration_weeks:
  *                 type: integer
+ *               start_date:
+ *                 type: string
+ *                 format: date
  *     responses:
  *       200:
  *         description: Programme mis à jour avec succès
@@ -170,12 +176,12 @@ router.post('/', async (req, res) => {
  */
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { name, duration_weeks } = req.body;
+  const { name, duration_weeks, start_date } = req.body;
 
   try {
     const result = await pool.query(
-      'UPDATE programs SET name = $1, duration_weeks = $2 WHERE id = $3 RETURNING *',
-      [name, duration_weeks, id]
+      'UPDATE programs SET name = $1, duration_weeks = $2, start_date = $3 WHERE id = $4 RETURNING *',
+      [name, duration_weeks, start_date, id]
     );
 
     if (result.rows.length === 0) {
