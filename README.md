@@ -44,6 +44,15 @@ Cette API permet à l'application BeGainer de :
 
 ---
 
+##🗂️ Schéma de la Base de Données
+Le backend repose sur une base PostgreSQL structurée autour des entités suivantes : users, user_preferences, programs, program_sessions, session_exercises, session_logs, exercises.
+
+###📷 Aperçu du schéma
+
+>📌 Voir en ligne : [dbdiagram.io](https://dbdiagram.io/d/Begainer-67ea3b144f7afba184c506ed)
+
+---
+
 ## 📁 Structure du Projet
 
 ```
