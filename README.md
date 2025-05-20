@@ -19,7 +19,7 @@ Pas besoin d’installer le backend en local ! Tout est déployé en ligne et pr
 | ------------- | ------------- |
 | 🌐 API en production  | https://begainer-api.onrender.com  |
 | 📄 Documentation Swagger  | [https://begainer-api.onrender.com/api-docs](https://begainer-api.onrender.com/api-docs)  |
-| 🗂️ Schéma Base de données  | [https://begainer-api.onrender.com/api-docs](https://dbdiagram.io/d/Begainer-67ea3b144f7afba184c506ed) |
+| 🗂️ Schéma Base de données  | [https://dbdiagram.io/d/Begainer-67ea3b144f7afba184c506ed](https://dbdiagram.io/d/Begainer-67ea3b144f7afba184c506ed) |
 | 📱 Frontend mobile (Expo)  | [https://github.com/BenjaminFalcon27/BeGainer-Frontend](https://github.com/BenjaminFalcon27/BeGainer-Frontend) |
 
  
