@@ -9,8 +9,20 @@
 Bienvenue dans le backend de BeGainer, une API RESTful Node.js/Express qui alimente l'application mobile React Native dédiée à la remise en forme.
 
 > **Projet Fullstack React Native + Express + PostgreSQL**
-> Backend disponible ici, frontend [dans ce dépôt](https://github.com/BenjaminFalcon27/BeGainer-Frontend)
+---
 
+## 🔗 Accès en Ligne
+
+Pas besoin d’installer le backend en local ! Tout est déployé en ligne et prêt à l’emploi 👇
+
+| Ressource  | Lien |
+| ------------- | ------------- |
+| 🌐 API en production  | https://begainer-api.onrender.com  |
+| 📄 Documentation Swagger  | [https://begainer-api.onrender.com/api-docs](https://begainer-api.onrender.com/api-docs)  |
+| 🗂️ Schéma Base de données  | [https://begainer-api.onrender.com/api-docs](https://dbdiagram.io/d/Begainer-67ea3b144f7afba184c506ed) |
+| 📱 Frontend mobile (Expo)  | [https://github.com/BenjaminFalcon27/BeGainer-Frontend](https://github.com/BenjaminFalcon27/BeGainer-Frontend) |
+
+ 
 ---
 
 ## 🌟 À Propos de BeGainer API
