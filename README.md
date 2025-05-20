@@ -49,7 +49,7 @@ Le backend repose sur une base PostgreSQL structurée autour des entités suivan
 
 ### 📷 Aperçu du schéma
 
-> 📌 Voir en ligne : [dbdiagram.io](https://dbdiagram.io/d/Begainer-67ea3b144f7afba184c506ed)
+📌 Voir en ligne : [dbdiagram.io](https://dbdiagram.io/d/Begainer-67ea3b144f7afba184c506ed)
 
 ---
 
@@ -69,37 +69,10 @@ Le backend repose sur une base PostgreSQL structurée autour des entités suivan
 
 ---
 
-## 🔐 Routes Principales
-
-### Authentification
-
-* `POST /api/auth/register` : Inscription
-* `POST /api/auth/login` : Connexion (retourne JWT)
-
-### Utilisateurs
-
-* `GET /api/users`
-* `GET /api/users/:id`
-* `PUT /api/users/:id`
-* `DELETE /api/users/:id`
-
-### Exercices
-
-* `GET /api/exercises`
-* `POST /api/exercises`
-* `PUT /api/exercises/:id`
-* `DELETE /api/exercises/:id`
-
-### Programmes & Séances
-
-* `POST /api/programs/auto-generate` : Génère un programme via Claude
-* `GET /api/sessions/program/:programId` : Séances d’un programme
-* `POST /api/session-logs` : Enregistre une session faite
-* `GET /api/session-logs/:sessionId/count` : Combien de fois une session a été faite
+## 🔐 Routes API
 
 📚 Swagger Local: [http://localhost:3000/api-docs](http://localhost:3000/api-docs)
 📚 Swagger Hosted: [https://begainer-api.onrender.com/api-docs/#/](https://begainer-api.onrender.com/api-docs/#/)
-
 
 ---
 
