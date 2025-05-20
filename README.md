@@ -2,7 +2,7 @@
 
 ![Node.js](https://img.shields.io/badge/Node.js-18.x-green)
 ![Express](https://img.shields.io/badge/Express.js-4.x-lightgrey)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-%23336791.svg?style=flat&logo=postgresql&logoColor=white)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-%23336791.svg?style=flat&logo=postgresql&logoColor=white)](https://dbdiagram.io/d/Begainer-67ea3b144f7afba184c506ed)
 [![Render](https://img.shields.io/badge/deploy-render-blue?logo=render)](https://begainer-api.onrender.com)
 [![Swagger Docs](https://img.shields.io/badge/API-docs-orange?logo=swagger)](https://begainer-api.onrender.com/api-docs)
 
