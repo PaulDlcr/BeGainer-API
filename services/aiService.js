@@ -67,13 +67,14 @@ Chaque séance doit contenir uniquement :
     - Le **nombre de répétitions** doit être compris entre 8 et 12
     - Chaque exercice de musculation doit avoir **3 à 4 sets**
     - Le **temps de repos** doit être compris entre 30 et 90 secondes
+  -Si l'exercice est un exercice de cardio, met "sets" à 1 et "reps" à 0 et "rest_time" à la durée en minutes (30 minutes = 30)
 
   - Si training_place = home_no_equipment, **utilise uniquement des exercices sans machine ni équipement**
   - Adapter le type d'exercices selon l'objectif :
     - lose weight → cardio + poids du corps
     - gain muscle → musculation structurée avec bons groupes musculaires
     - improve health → mobilité, stabilité, renforcement général
-
+  - Fait en sorte que les exercices polyarticulaires soit mis avant les exercices d'isolation
 
 ### IMPORTANT :
 - Réponds **uniquement** avec un tableau JSON (aucune explication, aucun texte autour)
