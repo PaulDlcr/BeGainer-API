@@ -1,5 +1,11 @@
 # BeGainer API – Propulsez Votre Reprise Sportive avec une IA Coach 🧠🏋️‍♂️
 
+![Node.js](https://img.shields.io/badge/Node.js-18.x-green)
+![Express](https://img.shields.io/badge/Express.js-4.x-lightgrey)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-%23336791.svg?style=flat&logo=postgresql&logoColor=white)
+[![Render](https://img.shields.io/badge/deploy-render-blue?logo=render)](https://begainer-api.onrender.com)
+[![Swagger Docs](https://img.shields.io/badge/API-docs-orange?logo=swagger)](https://begainer-api.onrender.com/api-docs)
+
 Bienvenue dans le backend de BeGainer, une API RESTful Node.js/Express qui alimente l'application mobile React Native dédiée à la remise en forme.
 
 > **Projet Fullstack React Native + Express + PostgreSQL**
@@ -100,6 +106,7 @@ NODE_ENV=development
 CLAUDE_API_KEY=sk-...
 CLAUDE_MODEL=claude...
 ```
+>⚠️ Clé API Claude nécessaire : Rendez-vous sur https://console.anthropic.com, créez un compte, rechargez avec au moins 5 €, et récupérez votre clé depuis >l’interface.
 
 ---
 
@@ -131,19 +138,10 @@ Retour : structure JSON avec `session_name`, `day_number`, `exercises[]`
 
 ---
 
-## 📌 Roadmap & Améliorations (To-Do)
-
-* ✅ Tests unitaires avec Jest / Supertest
-* ✅ Badge "fait" sur les séances
-* ✅ Ajout export PDF ou CSV
-* 🌟 Suivi hebdo + stats d'évolution
-
----
-
 ## 👥 Auteurs
 
-* Backend : [@PaulDlcr](https://github.com/PaulDlcr)
-* Frontend : [@BenjaminFalcon27](https://github.com/BenjaminFalcon27)
+* [@PaulDlcr](https://github.com/PaulDlcr)
+* [@BenjaminFalcon27](https://github.com/BenjaminFalcon27)
 
 ---
 
